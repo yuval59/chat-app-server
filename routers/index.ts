@@ -1,1 +1,0 @@
-export { channelsRouter } from './channels'

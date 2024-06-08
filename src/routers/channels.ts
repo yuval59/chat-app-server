@@ -1,7 +1,7 @@
-import { Request, Response, Router } from 'express'
+import { ROUTES } from '@/constants'
+import { ChannelController } from '@/db'
+import { Router, type Request, type Response } from 'express'
 import { z } from 'zod'
-import { ROUTES } from '../constants'
-import { ChannelController } from '../db'
 
 const newChannelBodyShape = z.object({
   channelName: z.string(),
@@ -36,7 +36,7 @@ channelsRouter.post(
 
       const { channelName } = parsed.data
 
-      const channel = ChannelController.getChannelOrCreate(channelName)
+      const channel = await ChannelController.makeChannel(channelName)
 
       res.json({ status: 'Success', channel })
     } catch (err) {

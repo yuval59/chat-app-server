@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { defineConfig } from 'drizzle-kit'
-import { env } from './env'
+import { env } from './src/env'
 
 const host = env.DB_HOST
 const port = env.DB_PORT
@@ -9,8 +9,8 @@ const password = env.DB_PASS
 const database = env.DB_DATABASE
 
 export default defineConfig({
-  out: '../drizzle',
-  schema: ['./db/schemas'],
+  out: './drizzle',
+  schema: ['./src/db/schemas'],
 
   dialect: 'mysql',
   dbCredentials: {

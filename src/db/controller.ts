@@ -1,6 +1,6 @@
-import { drizzle } from 'drizzle-orm/planetscale-serverless'
+import { env } from '@/env'
+import { drizzle } from 'drizzle-orm/mysql2'
 import mysql from 'mysql2'
-import { env } from '../env'
 import { schema } from './schemas'
 
 const connection = mysql.createConnection({
@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
   database: env.DB_DATABASE,
 })
 
-const db = drizzle(connection, { schema })
+const db = drizzle(connection, { schema, mode: 'default' })
 
 export abstract class Controller {
   protected static readonly dbInstance = db
