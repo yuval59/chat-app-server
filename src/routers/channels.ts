@@ -32,13 +32,13 @@ channelsRouter.post(
     try {
       const parsed = newChannelBodyShape.safeParse(req.body)
 
-      if (!parsed.success) return res.sendStatus(400)
+      if (!parsed.success) return res.status(400).send(parsed.error.issues)
 
       const { channelName } = parsed.data
 
       const channel = await ChannelController.makeChannel(channelName)
 
-      res.json({ status: 'Success', channel })
+      res.json({ channel })
     } catch (err) {
       console.error(err)
 

@@ -1,7 +1,9 @@
 import { ROUTES } from '@/constants'
 import { MessageController } from '@/db'
 import { Router, type Request, type Response } from 'express'
+import { v4 } from 'uuid'
 import { z } from 'zod'
+import { jwtDataShape, verifyJWT } from './middleware'
 
 const getMessagesBodyShape = z.object({
   channelId: z.string(),
@@ -9,12 +11,7 @@ const getMessagesBodyShape = z.object({
 
 const messageData = z.object({
   channelId: z.string(),
-  messages: z
-    .object({
-      message: z.string(),
-      username: z.string(),
-    })
-    .array(),
+  messages: z.string().array(),
 })
 
 export const messagesRouter = Router()
@@ -39,23 +36,29 @@ messagesRouter.get(
     }
   }
 )
+
 messagesRouter.post(
   ROUTES.MESSAGES,
-  //   [verifyJWT],
+  [verifyJWT],
   async (req: Request, res: Response) => {
     try {
       const parsed = messageData.safeParse(req.body)
-      if (!parsed.success) return res.sendStatus(400)
+      if (!parsed.success) return res.status(400).send(parsed.error.issues)
 
-      const { channelId, messages } = parsed.data
+      // Doesn't need safeParse since we know if everything is running properly res.locals.jwt was just set to the parsed jwt during the verifyJWT middleware
+      const jwt = jwtDataShape.parse(res.locals.jwt)
+      const messages = parsed.data.messages.map((message) => ({
+        userId: jwt.id,
+        channelId: parsed.data.channelId,
+        message,
+        id: v4(),
+      }))
 
-      console.log(messages)
-
-      await MessageController.insertMessages(
-        ...messages.map((message) => ({ ...message, channelId }))
+      await Promise.all(
+        messages.map((message) => MessageController.insertMessage(message))
       )
 
-      return res.json({ status: 'Success' })
+      return res.json({ messages })
     } catch (err) {
       console.error(err)
 
