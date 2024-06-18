@@ -1,9 +1,10 @@
 import { ROUTES } from '@/constants'
 import { MessageController } from '@/db'
-import { Router, type Request, type Response } from 'express'
+import { jwtPayloadShape } from '@/jwt'
+import { Request, Response, Router } from 'express'
 import { v4 } from 'uuid'
 import { z } from 'zod'
-import { jwtDataShape, verifyJWT } from './middleware'
+import { verifyJWT } from './middleware'
 
 const getMessagesBodyShape = z.object({
   channelId: z.string(),
@@ -46,7 +47,7 @@ messagesRouter.post(
       if (!parsed.success) return res.status(400).send(parsed.error.issues)
 
       // Doesn't need safeParse since we know if everything is running properly res.locals.jwt was just set to the parsed jwt during the verifyJWT middleware
-      const jwt = jwtDataShape.parse(res.locals.jwt)
+      const jwt = jwtPayloadShape.parse(res.locals.jwt)
       const messages = parsed.data.messages.map((message) => ({
         userId: jwt.id,
         channelId: parsed.data.channelId,

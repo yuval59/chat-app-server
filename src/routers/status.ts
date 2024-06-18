@@ -1,5 +1,5 @@
-import { Router, type Request, type Response } from 'express'
-import { ROUTES } from '../constants'
+import { ROUTES } from '@/constants'
+import { Request, Response, Router } from 'express'
 
 export const statusRouter = Router()
 

@@ -6,7 +6,9 @@ import { z } from 'zod'
 export const env = createEnv({
   server: {
     // Actual Server Stuff
-    PORT: z.string().transform((port) => parseInt(port)),
+    REST_PORT: z.string().transform((port) => parseInt(port)),
+    SOCKET_PORT: z.string().transform((port) => parseInt(port)),
+
     JWT_SECRET: z.string(),
 
     // DB Corner

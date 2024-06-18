@@ -1,7 +1,7 @@
 import { env } from '@/env'
-import type { NextFunction, Request, Response } from 'express'
+import { jwtPayloadShape } from '@/jwt'
+import { NextFunction, Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
-import { jwtDataShape } from '.'
 
 export const verifyJWT = async (
   req: Request,
@@ -15,7 +15,7 @@ export const verifyJWT = async (
     verify(token.replace('Bearer ', ''), env.JWT_SECRET, (err, decoded) => {
       if (err) return res.status(401).json(err.message)
 
-      const parsed = jwtDataShape.safeParse(decoded)
+      const parsed = jwtPayloadShape.safeParse(decoded)
       if (!parsed.success) return res.status(400).send(parsed.error.issues)
 
       res.locals.jwt = parsed.data
