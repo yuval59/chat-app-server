@@ -1,5 +1,5 @@
 import { RETRIEVAL_LIMIT } from '@/constants'
-import { asc, eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { desc, eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { Controller } from './controller'
 import { MessageTable } from './schemas'
 
@@ -13,10 +13,17 @@ export class MessageController extends Controller {
   ): Promise<MessageModel[]> =>
     this.dbInstance.query.MessageTable.findMany({
       where: eq(MessageTable.channelId, channelId),
-      orderBy: asc(MessageTable.createdAt),
+      with: { user: true },
+      orderBy: desc(MessageTable.createdAt),
       limit: RETRIEVAL_LIMIT,
     })
 
-  static insertMessage = async (messageObject: MessageInsertData) =>
-    this.dbInstance.insert(MessageTable).values(messageObject)
+  static insertMessage = async (messageObject: MessageInsertData) => {
+    const timeStamp = new Date()
+    await this.dbInstance
+      .insert(MessageTable)
+      .values({ ...messageObject, createdAt: timeStamp })
+
+    return timeStamp
+  }
 }

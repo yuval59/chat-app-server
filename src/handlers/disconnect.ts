@@ -1,8 +1,13 @@
 import { SocketState } from '@/socket'
-import { DisconnectReason } from 'socket.io'
+import { DisconnectReason, Socket } from 'socket.io'
 
+type DisconnectHandlerArgs = {
+  socket: Socket
+  state: SocketState
+}
 export const disconnectHandler =
-  (id: string, state: SocketState) => (reason: DisconnectReason) => {
-    state.removeSocket(id)
-    console.debug(`Disconnected ${id}\n ${reason}`)
+  (args: DisconnectHandlerArgs) => (reason: DisconnectReason) => {
+    const { socket, state } = args
+    state.removeSocket(socket.id)
+    console.debug(`Disconnected ${socket.id}\n ${reason}`)
   }

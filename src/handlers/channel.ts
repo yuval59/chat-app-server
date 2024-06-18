@@ -5,9 +5,12 @@ import { z } from 'zod'
 
 const channelUpdateEvent = z.string()
 
+type ChannelArgs = { socket: Socket }
+
 export const channelUpdateHandler =
-  (socket: Socket) => async (event: unknown) => {
-    const parsed = channelUpdateEvent.safeParse(event)
+  (args: ChannelArgs) => async (event: unknown) => {
+    const { socket } = args,
+      parsed = channelUpdateEvent.safeParse(event)
     if (!parsed.success) return
 
     for (const roomName in socket.rooms) socket.leave(roomName)
@@ -15,6 +18,8 @@ export const channelUpdateHandler =
     socket.join(parsed.data)
   }
 
-export const getChannelsHandler = (socket: Socket) => async () => {
-  socket.emit(SOCKET_EVENTS.GET_CHANNELS, await ChannelController.getChannels())
-}
+export const getChannelsHandler = (args: ChannelArgs) => async () =>
+  args.socket.emit(
+    SOCKET_EVENTS.GET_CHANNELS,
+    await ChannelController.getChannels()
+  )

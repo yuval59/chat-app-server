@@ -26,7 +26,8 @@ export const SOCKET_EVENTS = {
   NEW_USER: 'new_user',
   UPDATE_USER: 'update_user',
 
-  MESSAGE: 'message',
+  NEW_MESSAGE: 'message',
+  MESSAGE_HISTORY: 'history',
 } as const
 
 export const ERRORS = {

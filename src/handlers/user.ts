@@ -18,9 +18,11 @@ const userUpdateEventShape = (socketId: string, state: SocketState) =>
     )
     .refine(({ jwt }) => state.validateJwt(socketId, jwt), ERRORS.JWT_MISMATCH)
 
+type UserUpdateArgs = { socket: Socket; state: SocketState }
 export const userUpdateHandler =
-  (socket: Socket, state: SocketState) => async (event: unknown) => {
-    const parsed = userUpdateEventShape(socket.id, state).safeParse(event)
+  (args: UserUpdateArgs) => async (event: unknown) => {
+    const { socket, state } = args,
+      parsed = userUpdateEventShape(socket.id, state).safeParse(event)
     if (!parsed.success)
       return socket.emit(SOCKET_EVENTS.ERROR, {
         event: SOCKET_EVENTS.UPDATE_USER,
