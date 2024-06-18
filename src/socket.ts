@@ -43,11 +43,15 @@ export class SocketState {
   getRoom = (socketId: string) => this.#state[socketId].room
 }
 
-const state = new SocketState(),
-  server = new Server(env.SOCKET_PORT, {
-    // Options
-  })
+const start = () => {
+  const state = new SocketState(),
+    server = new Server(env.SOCKET_PORT, {
+      // Options
+    })
 
-server.on(SOCKET_EVENTS.CONNECTION, connectionHandler({ server, state }))
+  server.on(SOCKET_EVENTS.CONNECTION, connectionHandler({ server, state }))
 
-console.log(`Socket.io server is running on port ${env.SOCKET_PORT}`)
+  console.log(`Socket.io server is running on port ${env.SOCKET_PORT}`)
+}
+
+export default start

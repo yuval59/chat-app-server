@@ -1,12 +1,8 @@
-import { COLOR, RETRIEVAL_LIMIT } from '@/constants'
-import { InferInsertModel, InferSelectModel, eq } from 'drizzle-orm'
-import { z } from 'zod'
+import { InferInsertModel, eq } from 'drizzle-orm'
 import { Controller } from './controller'
 import { UserTable } from './schemas'
 
 type UserInsertData = InferInsertModel<typeof UserTable>
-
-type UserModel = InferSelectModel<typeof UserTable>
 
 export class UserController extends Controller {
   static insertUser = async (userObject: UserInsertData) =>

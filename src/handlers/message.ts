@@ -47,12 +47,11 @@ export const newMessageHandler =
   }
 
 type MessageHistoryArgs = { socket: Socket; state: SocketState }
-export const messageHistoryHandler =
-  (args: MessageHistoryArgs) => async (event: unknown) => {
-    const { state, socket } = args,
-      messages = await MessageController.getMessagesByChannelId(
-        state.getRoom(socket.id)
-      )
+export const messageHistoryHandler = (args: MessageHistoryArgs) => async () => {
+  const { state, socket } = args,
+    messages = await MessageController.getMessagesByChannelId(
+      state.getRoom(socket.id)
+    )
 
-    socket.emit(SOCKET_EVENTS.MESSAGE_HISTORY, { messages })
-  }
+  socket.emit(SOCKET_EVENTS.MESSAGE_HISTORY, { messages })
+}

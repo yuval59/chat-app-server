@@ -8,14 +8,18 @@ import {
   usersRouter,
 } from './routers'
 
-const server = express()
+const start = () => {
+  const server = express()
 
-server.use(cors(), express.json())
+  server.use(cors(), express.json())
 
-server.use(statusRouter)
-server.use(channelsRouter)
-server.use(messagesRouter)
-server.use(usersRouter)
+  server.use(statusRouter)
+  server.use(channelsRouter)
+  server.use(messagesRouter)
+  server.use(usersRouter)
 
-server.listen(env.REST_PORT)
-console.log(`REST server is running on port ${env.REST_PORT}`)
+  server.listen(env.REST_PORT)
+  console.log(`REST server is running on port ${env.REST_PORT}`)
+}
+
+export default start

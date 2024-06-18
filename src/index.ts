@@ -1,2 +1,5 @@
-import {} from './rest'
-import {} from './socket'
+import startRestServer from './rest'
+import startSocketServer from './socket'
+
+startRestServer()
+startSocketServer()
