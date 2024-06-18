@@ -1,6 +1,6 @@
 import { ROUTES } from '@/constants'
 import { ChannelController } from '@/db'
-import { Router, type Request, type Response } from 'express'
+import { Request, Response, Router } from 'express'
 import { z } from 'zod'
 
 const newChannelBodyShape = z.object({

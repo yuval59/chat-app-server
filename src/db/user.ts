@@ -1,5 +1,5 @@
 import { COLOR, RETRIEVAL_LIMIT } from '@/constants'
-import { eq, type InferInsertModel, type InferSelectModel } from 'drizzle-orm'
+import { InferInsertModel, InferSelectModel, eq } from 'drizzle-orm'
 import { z } from 'zod'
 import { Controller } from './controller'
 import { UserTable } from './schemas'
@@ -12,12 +12,22 @@ export class UserController extends Controller {
   static insertUser = async (userObject: UserInsertData) =>
     this.dbInstance.insert(UserTable).values(userObject)
 
-  static updateColor = async (id: string, color: string) =>
-    this.dbInstance.update(UserTable).set({ color }).where(eq(UserTable.id, id))
+  static updateColor = async (userId: string, color: string) =>
+    this.dbInstance
+      .update(UserTable)
+      .set({ color })
+      .where(eq(UserTable.id, userId))
 
-  static updateUsername = async (id: string, username: string) =>
+  static updateUsername = async (userId: string, username: string) =>
     this.dbInstance
       .update(UserTable)
       .set({ username })
-      .where(eq(UserTable.id, id))
+      .where(eq(UserTable.id, userId))
+
+  static userExists = async (userId: string) =>
+    (await this.dbInstance.query.UserTable.findFirst({
+      where: eq(UserTable.id, userId),
+    }))
+      ? true
+      : false
 }

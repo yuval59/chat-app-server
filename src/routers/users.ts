@@ -1,35 +1,28 @@
-import { COLOR, ROUTES } from '@/constants'
+import { COLOR, ERRORS, ROUTES } from '@/constants'
 import { UserController } from '@/db'
-import { env } from '@/env'
-import { Router, type Request, type Response } from 'express'
-import { sign } from 'jsonwebtoken'
+import { jwtPayloadShape, signJwt } from '@/jwt'
+import { Request, Response, Router } from 'express'
 import { v4 } from 'uuid'
-import { z, type TypeOf } from 'zod'
-import { jwtDataShape, verifyJWT } from './middleware'
+import { z } from 'zod'
+import { verifyJWT } from './middleware'
 
 export const usersRouter = Router()
 
-const userCreationData = z.object({
+const userCreationShape = z.object({
   username: z.string(),
   color: COLOR,
 })
 
-const userUpdateData = z
+const userUpdateShape = z
   .object({
     username: z.string().optional(),
     color: COLOR.optional(),
   })
-  .refine(
-    (user) => !!user.username || !!user.color,
-    'Please enter something to update'
-  )
-
-const signJwt = (user: TypeOf<typeof jwtDataShape>) =>
-  sign(user, env.JWT_SECRET)
+  .refine((user) => !!user.username || !!user.color, ERRORS.USER_UPDATE_NEITHER)
 
 usersRouter.post(ROUTES.USERS, async (req: Request, res: Response) => {
   try {
-    const parsed = userCreationData.safeParse(req.body)
+    const parsed = userCreationShape.safeParse(req.body)
     if (!parsed.success) return res.status(400).send(parsed.error.issues)
 
     const { username, color } = parsed.data
@@ -51,23 +44,26 @@ usersRouter.patch(
   [verifyJWT],
   async (req: Request, res: Response) => {
     try {
-      const parsed = userUpdateData.safeParse(req.query)
+      const parsed = userUpdateShape.safeParse(req.query)
       if (!parsed.success) return res.status(400).send(parsed.error.issues)
 
       const { color, username } = parsed.data
 
-      // Doesn't need safeParse since we know if everything is running properly res.locals.jwt was just set to the parsed jwt during the verifyJWT middleware
-      const jwt = jwtDataShape.parse(res.locals.jwt),
-        id = jwt.id
+      // Doesn't need safeParse since we know if everything is running properly, res.locals.jwt was just set to the parsed jwt during the verifyJWT middleware
+      const current = jwtPayloadShape.parse(res.locals.jwt),
+        { id: userId } = current
 
-      if (color) UserController.updateColor(id, color)
-      if (username) UserController.updateUsername(id, username)
+      if (!(await UserController.userExists(userId)))
+        return res.status(404).send(ERRORS.USER_NOT_FOUND)
+
+      if (color) await UserController.updateColor(userId, color)
+      if (username) await UserController.updateUsername(userId, username)
 
       return res.json({
         jwt: signJwt({
-          id,
-          color: color ?? jwt.color,
-          username: username ?? jwt.username,
+          id: userId,
+          color: color ?? current.color,
+          username: username ?? current.username,
         }),
       })
     } catch (err) {

@@ -1,5 +1,5 @@
 import { RETRIEVAL_LIMIT } from '@/constants'
-import { eq, type InferInsertModel, type InferSelectModel } from 'drizzle-orm'
+import { eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { Controller } from './controller'
 import { MessageTable } from './schemas'
 
