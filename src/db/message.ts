@@ -1,5 +1,5 @@
 import { RETRIEVAL_LIMIT } from '@/constants'
-import { eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { asc, eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { Controller } from './controller'
 import { MessageTable } from './schemas'
 
@@ -13,6 +13,7 @@ export class MessageController extends Controller {
   ): Promise<MessageModel[]> =>
     this.dbInstance.query.MessageTable.findMany({
       where: eq(MessageTable.channelId, channelId),
+      orderBy: asc(MessageTable.createdAt),
       limit: RETRIEVAL_LIMIT,
     })
 
