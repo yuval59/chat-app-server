@@ -1,5 +1,8 @@
-import { SOCKET_EVENTS } from '@/constants'
-import { ChannelController } from '@/db'
+import { Server, Socket } from 'socket.io'
+import { z } from 'zod'
+import { verifyJwtOrSign } from '.'
+import { SOCKET_EVENTS } from '../../constants'
+import { ChannelController } from '../../db'
 import {
   channelUpdateHandler,
   disconnectHandler,
@@ -7,11 +10,8 @@ import {
   messageHistoryHandler,
   newMessageHandler,
   userUpdateHandler,
-} from '@/handlers'
-import { SocketState } from '@/socket'
-import { Server, Socket } from 'socket.io'
-import { z } from 'zod'
-import { verifyJwtOrSign } from '.'
+} from '../../handlers'
+import { SocketState } from '../../socket'
 
 const socketConnectionShape = z.object({
   jwt: z.string(),

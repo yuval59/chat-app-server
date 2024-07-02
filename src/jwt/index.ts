@@ -1,5 +1,5 @@
-import { COLOR } from '@/constants'
 import { z } from 'zod'
+import { COLOR } from '../constants'
 
 export const jwtPayloadShape = z.object({
   id: z.string(),

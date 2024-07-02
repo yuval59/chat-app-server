@@ -1,9 +1,9 @@
-import { ERRORS, SOCKET_EVENTS } from '@/constants'
-import { MessageController } from '@/db'
-import { SocketState } from '@/socket'
 import { Server, Socket } from 'socket.io'
 import { v4 } from 'uuid'
 import { z } from 'zod'
+import { ERRORS, SOCKET_EVENTS } from '../constants'
+import { MessageController } from '../db'
+import { SocketState } from '../socket'
 
 const newMessageEventShape = (socketId: string, state: SocketState) =>
   z

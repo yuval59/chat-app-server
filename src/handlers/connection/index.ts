@@ -1,11 +1,11 @@
-import { SOCKET_EVENTS } from '@/constants'
-import { UserController } from '@/db'
-import { env } from '@/env'
-import { jwtPayloadShape, signJwt } from '@/jwt'
-import { SocketState } from '@/socket'
 import { verify } from 'jsonwebtoken'
 import { Socket } from 'socket.io'
 import { v4 } from 'uuid'
+import { SOCKET_EVENTS } from '../../constants'
+import { UserController } from '../../db'
+import { env } from '../../env'
+import { jwtPayloadShape, signJwt } from '../../jwt'
+import { SocketState } from '../../socket'
 
 export { connectionHandler } from './connection'
 

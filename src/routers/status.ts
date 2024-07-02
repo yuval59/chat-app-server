@@ -1,4 +1,4 @@
-import { ROUTES } from '@/constants'
+import { ROUTES } from '../constants'
 import { Request, Response, Router } from 'express'
 
 export const statusRouter = Router()

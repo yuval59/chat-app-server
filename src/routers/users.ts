@@ -1,9 +1,9 @@
-import { COLOR, ERRORS, ROUTES } from '@/constants'
-import { UserController } from '@/db'
-import { jwtPayloadShape, signJwt } from '@/jwt'
 import { Request, Response, Router } from 'express'
 import { v4 } from 'uuid'
 import { z } from 'zod'
+import { COLOR, ERRORS, ROUTES } from '../constants'
+import { UserController } from '../db'
+import { jwtPayloadShape, signJwt } from '../jwt'
 import { verifyJWT } from './middleware'
 
 export const usersRouter = Router()

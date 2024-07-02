@@ -1,7 +1,7 @@
-import { SOCKET_EVENTS } from '@/constants'
-import { ChannelController } from '@/db'
 import { Socket } from 'socket.io'
 import { z } from 'zod'
+import { SOCKET_EVENTS } from '../constants'
+import { ChannelController } from '../db'
 
 const channelUpdateEvent = z.string()
 

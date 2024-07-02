@@ -1,7 +1,7 @@
-import { env } from '@/env'
-import { jwtPayloadShape } from '@/jwt'
 import { NextFunction, Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
+import { env } from '../../env'
+import { jwtPayloadShape } from '../../jwt'
 
 export const verifyJWT = async (
   req: Request,
