@@ -1,7 +1,7 @@
-import { env } from '@/env'
 import { drizzle } from 'drizzle-orm/mysql2'
 import mysql from 'mysql2'
-import { schema } from './schemas'
+import { env } from '../env'
+import { schema } from './models'
 
 const connection = mysql.createConnection({
   host: env.DB_HOST,

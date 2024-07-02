@@ -1,9 +1,9 @@
-import { ROUTES } from '@/constants'
-import { MessageController } from '@/db'
-import { jwtPayloadShape } from '@/jwt'
 import { Request, Response, Router } from 'express'
 import { v4 } from 'uuid'
 import { z } from 'zod'
+import { ROUTES } from '../constants'
+import { MessageController } from '../db'
+import { jwtPayloadShape } from '../jwt'
 import { verifyJWT } from './middleware'
 
 const getMessagesBodyShape = z.object({

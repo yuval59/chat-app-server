@@ -1,14 +1,10 @@
 {
   "name": "chat-app-server",
-  "type": "module",
   "scripts": {
     "dev": "bun --hot ./src/index.ts",
     "build": "tsc",
     "start": "node dist",
     "studio": "bun drizzle-kit studio"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.5.1",
@@ -16,11 +12,12 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.14.8",
     "@types/uuid": "^9.0.8",
-    "drizzle-kit": "^0.22.5"
+    "drizzle-kit": "^0.22.5",
+    "typescript": "^5.5.2"
   },
   "dependencies": {
-    "@t3-oss/env-core": "^0.10.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",

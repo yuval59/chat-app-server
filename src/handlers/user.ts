@@ -1,9 +1,9 @@
-import { COLOR, ERRORS, SOCKET_EVENTS } from '@/constants'
-import { UserController } from '@/db'
-import { signJwt } from '@/jwt'
-import { SocketState } from '@/socket'
 import { Socket } from 'socket.io'
 import { z } from 'zod'
+import { COLOR, ERRORS, SOCKET_EVENTS } from '../constants'
+import { UserController } from '../db'
+import { signJwt } from '../jwt'
+import { SocketState } from '../socket'
 
 const userUpdateEventShape = (socketId: string, state: SocketState) =>
   z

@@ -1,5 +1,5 @@
-import { SocketState } from '@/socket'
 import { DisconnectReason, Socket } from 'socket.io'
+import { SocketState } from '../socket'
 
 type DisconnectHandlerArgs = {
   socket: Socket

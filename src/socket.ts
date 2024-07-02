@@ -1,9 +1,9 @@
-import { SOCKET_EVENTS } from '@/constants'
-import { env } from '@/env'
-import { connectionHandler } from '@/handlers'
-import { jwtPayloadShape } from '@/jwt'
 import { Server } from 'socket.io'
 import { TypeOf } from 'zod'
+import { SOCKET_EVENTS } from './constants'
+import { env } from './env'
+import { connectionHandler } from './handlers'
+import { jwtPayloadShape } from './jwt'
 
 type Payload = TypeOf<typeof jwtPayloadShape>
 type IncludePayload = { jwt: string; payload: Payload }
