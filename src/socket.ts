@@ -9,11 +9,7 @@ type Payload = TypeOf<typeof jwtPayloadShape>
 type IncludePayload = { jwt: string; payload: Payload }
 type IncludeRoom = { room: string }
 
-type State = {
-  jwt: string
-  payload: Payload
-  room: string
-}
+type State = IncludePayload & IncludeRoom
 type SocketUpdateArgs =
   | IncludePayload
   | IncludeRoom

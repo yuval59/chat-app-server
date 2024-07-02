@@ -23,7 +23,7 @@ const makeNewUser = async (args: VerificationArgs) => {
 
   await UserController.insertUser(newUser)
 
-  state.updateSocket(socket.id, { jwt: signed, payload: newUser, room })
+  state.addSocket(socket.id, { jwt: signed, payload: newUser, room })
 
   socket.emit(SOCKET_EVENTS.NEW_USER, signed)
 }

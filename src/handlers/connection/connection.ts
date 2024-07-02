@@ -25,6 +25,7 @@ export const connectionHandler =
     if (!parsed.success) return socket.disconnect()
 
     const channels = await ChannelController.getChannels()
+
     socket.emit(SOCKET_EVENTS.GET_CHANNELS)
     socket.join(channels[0].id) // Temporary - will add a settable default channel.
 
