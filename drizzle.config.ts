@@ -10,7 +10,7 @@ const database = env.DB_DATABASE
 
 export default defineConfig({
   out: './drizzle',
-  schema: ['./src/db/schemas'],
+  schema: ['./src/db/models'],
 
   dialect: 'mysql',
   dbCredentials: {
