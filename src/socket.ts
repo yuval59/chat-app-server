@@ -43,6 +43,9 @@ const start = () => {
   const state = new SocketState(),
     server = new Server(env.SOCKET_PORT, {
       // Options
+      cors: {
+        origin: '*',
+      },
     })
 
   server.on(SOCKET_EVENTS.CONNECTION, connectionHandler({ server, state }))

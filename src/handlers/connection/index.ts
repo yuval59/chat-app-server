@@ -36,6 +36,7 @@ type VerificationArgs = {
 }
 export const verifyJwtOrSign = (args: VerificationArgs) => {
   const { channelId: room, jwt, socket, state } = args
+
   verify(jwt, env.JWT_SECRET, async (err, decoded) => {
     const parsed = jwtPayloadShape.safeParse(decoded)
 
