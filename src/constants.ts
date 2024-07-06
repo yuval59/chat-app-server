@@ -1,9 +1,3 @@
-import { z } from 'zod'
-
-export const COLOR = z
-  .string()
-  .regex(new RegExp('^#(?:[0-9a-fA-F]{3}){1,2}$'), 'Invalid hex color')
-
 export const RETRIEVAL_LIMIT = 500 as const
 
 export const ROUTES = {
@@ -34,4 +28,6 @@ export const ERRORS = {
   USER_UPDATE_NEITHER: 'Please enter something to update',
   JWT_MISMATCH: 'JWT expired',
   USER_NOT_FOUND: 'User not found',
+  INVALID_HEX: 'Invalid hex color',
+  USERS_MISMATCH: 'The userId is not equal to the JWT id',
 } as const

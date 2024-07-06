@@ -1,9 +1,10 @@
-import { eq } from 'drizzle-orm'
-import { v4 } from 'uuid'
-import { Controller } from './controller'
+import { InferInsertModel, eq } from 'drizzle-orm'
+import { DBController } from './controller'
 import { ChannelModel } from './models'
 
-export class ChannelController extends Controller {
+type ChannelInsertData = InferInsertModel<typeof ChannelModel>
+
+export class ChannelDBController extends DBController {
   static getChannels = () => this.dbInstance.select().from(ChannelModel)
 
   static getChannelByName = (name: string) =>
@@ -16,17 +17,6 @@ export class ChannelController extends Controller {
       where: eq(ChannelModel.id, id),
     })
 
-  static makeChannel = async (name: string) => {
-    const existing = await this.dbInstance.query.ChannelTable.findFirst({
-      where: eq(ChannelModel.name, name),
-    })
-
-    if (existing) return existing
-
-    const values = { id: v4(), name }
-
-    await this.dbInstance.insert(ChannelModel).values(values)
-
-    return values
-  }
+  static createChannel = async (values: ChannelInsertData) =>
+    this.dbInstance.insert(ChannelModel).values(values)
 }

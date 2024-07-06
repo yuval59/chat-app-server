@@ -13,6 +13,6 @@ const connection = mysql.createConnection({
 
 const db = drizzle(connection, { schema, mode: 'default' })
 
-export abstract class Controller {
+export abstract class DBController {
   protected static readonly dbInstance = db
 }

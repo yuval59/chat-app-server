@@ -1,29 +1,25 @@
-import { desc, eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { asc, desc, eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { RETRIEVAL_LIMIT } from '../constants'
-import { Controller } from './controller'
+import { DBController } from './controller'
 import { MessageModel } from './models'
 
-type MessageInsertData = InferInsertModel<typeof MessageModel>
+type MessageInsertData = InferInsertModel<typeof MessageModel> & {
+  createdAt: Date
+}
 
 type MessageModel = InferSelectModel<typeof MessageModel>
 
-export class MessageController extends Controller {
+export class MessageDBController extends DBController {
   static getMessagesByChannelId = (
     channelId: string
   ): Promise<MessageModel[]> =>
     this.dbInstance.query.MessageTable.findMany({
       where: eq(MessageModel.channelId, channelId),
       with: { user: true },
-      orderBy: desc(MessageModel.createdAt),
+      orderBy: asc(MessageModel.createdAt),
       limit: RETRIEVAL_LIMIT,
     })
 
-  static insertMessage = async (messageObject: MessageInsertData) => {
-    const timeStamp = new Date()
-    await this.dbInstance
-      .insert(MessageModel)
-      .values({ ...messageObject, createdAt: timeStamp })
-
-    return timeStamp
-  }
+  static createMessage = async (messageObject: MessageInsertData) =>
+    await this.dbInstance.insert(MessageModel).values(messageObject)
 }

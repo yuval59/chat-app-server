@@ -1,29 +1,26 @@
 import { InferInsertModel, eq } from 'drizzle-orm'
-import { Controller } from './controller'
+import { DBController } from './controller'
 import { UserModel } from './models'
 
-type UserInsertData = InferInsertModel<typeof UserModel>
+export type UserInsertData = InferInsertModel<typeof UserModel> & {
+  createdAt: Date
+}
 
-export class UserController extends Controller {
-  static insertUser = async (userObject: UserInsertData) =>
+export class UserDBController extends DBController {
+  static createUser = async (userObject: UserInsertData) =>
     this.dbInstance.insert(UserModel).values(userObject)
 
-  static updateColor = async (userId: string, color: string) =>
+  static updateUser = async (
+    userId: string,
+    values: { color: string; username: string }
+  ) =>
     this.dbInstance
       .update(UserModel)
-      .set({ color })
+      .set(values)
       .where(eq(UserModel.id, userId))
 
-  static updateUsername = async (userId: string, username: string) =>
-    this.dbInstance
-      .update(UserModel)
-      .set({ username })
-      .where(eq(UserModel.id, userId))
-
-  static userExists = async (userId: string) =>
-    (await this.dbInstance.query.UserTable.findFirst({
+  static getUserById = async (userId: string) =>
+    this.dbInstance.query.UserTable.findFirst({
       where: eq(UserModel.id, userId),
-    }))
-      ? true
-      : false
+    })
 }
